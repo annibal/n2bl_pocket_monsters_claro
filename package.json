@@ -1,0 +1,22 @@
+{
+  "name": "n2bl_pocket_monsters_claro",
+  "version": "1.0.0",
+  "description": "Pokedex Test for Fullstack job position",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build:server": "npm --prefix server run build",
+    "build:client": "npm --prefix client run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annibal/n2bl_pocket_monsters_claro.git"
+  },
+  "author": "N²Bl",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/annibal/n2bl_pocket_monsters_claro/issues"
+  },
+  "homepage": "https://github.com/annibal/n2bl_pocket_monsters_claro#readme"
+}
