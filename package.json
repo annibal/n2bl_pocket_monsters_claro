@@ -4,10 +4,9 @@
   "description": "Pokedex Test for Fullstack job position",
   "main": "index.js",
   "scripts": {
-    "dev:server": "npm --prefix server run dev",
-    "dev:client": "npm --prefix client run dev",
-    "build:server": "npm --prefix server run build",
-    "build:client": "npm --prefix client run build"
+    "start": "echo 'Start is unavailable, please use the dev command' && exit 1",
+    "dev": "echo 'concurrently not yet implemented, cannot run both projects together' && exit 1",
+    "gaia": "node server/sub_fns/gaia.js"
   },
   "repository": {
     "type": "git",
