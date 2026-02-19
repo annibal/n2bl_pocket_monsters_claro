@@ -8,5 +8,8 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "src")
     }
+  },
+  server: {
+    port: Number(process.env.VITE_PORT) || 5173
   }
 });

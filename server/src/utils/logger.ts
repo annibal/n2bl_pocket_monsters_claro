@@ -1,12 +1,16 @@
 //@ts-nocheck
 
-
 export default function log(...args: any[]) {
-  const prefix = [`[${ANSI.G.NF}LOGGER${ANSI.RST}]`,
-    `${ANSI.C.BF}${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
-    `${ANSI.C.NF} :>>${ANSI.RST}`
-  ].join(" ")
-  
+  // const fmtdate = [
+  //   new Date().getHours(),
+  //   new Date().getMinutes(),
+  //   new Date().getSeconds(),
+  // ].map(
+  //   timePart => String(timePart).padStart(2, 0)
+  // ).join(":");
+
+  const prefix = ":>>"
+
   if (typeof args[0] === "string") {
     args[0] = prefix + " " + args[0];
   } else {
@@ -15,7 +19,6 @@ export default function log(...args: any[]) {
 
   console.log(...args);
 }
-
 
 /**
  * ANSI[Color Name Initial][Type], where:
@@ -27,7 +30,7 @@ export default function log(...args: any[]) {
  *   - NB for Normal Background
  *   - BF for Bright Foreground
  *   - BB for Bright Background
- * 
+ *
  * The meaning of "bright" may differ based on shell theme.
  */
 const ANSI = escape({
@@ -49,25 +52,28 @@ const ANSI = escape({
   C: { NF: 36, NB: 46, BF: 96, BB: 106 },
   /** White */
   W: { NF: 37, NB: 47, BF: 97, BB: 107 },
-})
+});
 
-ANSI.RST = "\x1b[0m"
-
-
+ANSI.RST = "\x1b[0m";
 
 function escape(obj): typeof obj {
-  return Object.entries(obj).reduce((acc1, [key1, val1]) => ({
-    ...acc1,
-    [key1]: typeof val1 === "object"
-      ? Object.entries(val1).reduce((acc2, [key2, val2]) => ({
-        ...acc2,
-        [key2]: `\x1b[${val2}m`
-      }), {})
-      : `x1b[${val1}m`
-  }), {})
+  return Object.entries(obj).reduce(
+    (acc1, [key1, val1]) => ({
+      ...acc1,
+      [key1]:
+        typeof val1 === "object" ?
+          Object.entries(val1).reduce(
+            (acc2, [key2, val2]) => ({
+              ...acc2,
+              [key2]: `\x1b[${val2}m`,
+            }),
+            {}
+          )
+        : `x1b[${val1}m`,
+    }),
+    {}
+  );
 }
-
-
 
 // | Color   | Normal   | BG       | Bright   | Bright BG |
 // | ------- | -------- | -------- | -------- | --------- |

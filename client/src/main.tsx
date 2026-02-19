@@ -5,10 +5,12 @@ import "@/styles/index.css";
 import Home from "@/pages/Home";
 import PokemonDetails from "@/pages/pokemon/PokemonDetails";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
+    element: <Home apiUrl={apiUrl} />
   },
   {
     path: "/pokemon/:id",

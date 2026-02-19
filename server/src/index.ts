@@ -1,12 +1,15 @@
+import "dotenv/config";
 import http from "node:http";
-import { PokemonController } from "@/controller/pokemon.controller";
 import log from "@/utils/logger";
+import { PokemonController } from "@/controller/pokemon.controller";
+
+const PORT = Number(process.env.SERVER_PORT) || 3001;
 
 const pkmnController = new PokemonController();
 
 const server = http.createServer((req, res) => {
   res.setHeader("Content-Type", "application/json");
-  log("Received Request:", req.method, req.url)
+  log("Received Request:", req.method, req.url);
 
   if (!req.url) {
     log("SERVER ERROR: No Url in Request");
@@ -32,4 +35,14 @@ const server = http.createServer((req, res) => {
   res.end(JSON.stringify({ error: "Not Found" }));
 });
 
-server.listen(3001);
+server.listen(PORT, () => {
+  console.log("Server running on http://localhost:3001");
+});
+
+server.on("error", (err: any) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`Port ${PORT} is already in use.`);
+    process.exit(1);
+  }
+  console.error("Server Fatal Error", err);
+});
