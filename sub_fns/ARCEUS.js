@@ -235,6 +235,16 @@ async function main() {
       egg_group1_id: egg_groups[0].egg_group,
       egg_group2: egg_groups[1]?.names?.en,
       egg_group2_id: egg_groups[1]?.egg_group,
+
+      hp: null,
+      attack: null,
+      defense: null,
+      special_attack: null,
+      special_defense: null,
+      speed: null,
+      accuracy: null,
+      evasion: null,
+      special: null,
       ...spread_types
     }
     
@@ -259,7 +269,7 @@ async function main() {
   console.log(`[ARCEUS]=> Lets go, database:`);
   letsGoDatabase({ pokemons, flavors, versions})
 
-  console.log(`\n[ARCEUS]=> All done!`);
+  console.log(`\n[ARCEUS]=> All done!\n\n`);
 }
 main();
 

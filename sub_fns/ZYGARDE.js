@@ -16,7 +16,7 @@ const DB_PATH = path.resolve("server/pokemon.db");
  * @param {Object[]} data.versions - Array of version groups of the game
  * @param {Object[]} data.flavors - Array with the flavor text descriptions of the pokemons on each game
  * @param {number} data.pokemons[].id - Pokemon number in the national dex
- * @param {string} data.pokemons[].identifier - Pokemon's name, slugified
+ * @param {string} data.pokemons[].name - Pokemon's name, slugified
  * data.pokemons[].a_whole_lot_more_properties...
  * @param {number} data.versions[].id - Arbitrary unique number that identifies this game version
  * @param {string} data.versions[].name - The name of this game version group, like Red/Blue, Sword, X & Y.
@@ -45,15 +45,10 @@ export function letsGoDatabase(data) {
     db.exec(`
       CREATE TABLE pokemon (
         id INTEGER PRIMARY KEY,
-        identifier TEXT NOT NULL,
         height INTEGER,
         weight INTEGER,
         base_experience INTEGER,
-        order_index INTEGER,
-        is_default INTEGER,
-
         evolves_from_species_id INTEGER,
-        evolution_chain_id INTEGER,
 
         gender_rate INTEGER,
         capture_rate INTEGER,
@@ -74,7 +69,6 @@ export function letsGoDatabase(data) {
 
         shape TEXT,
         shape_description TEXT,
-        habitat TEXT,
 
         type1 TEXT,
         type1_id TEXT,
@@ -133,15 +127,14 @@ export function letsGoDatabase(data) {
     console.log(`[ZYGARDE]=> preparing insertion functions`);
     const insertPokemon = db.prepare(`
       INSERT INTO pokemon (
-        id, identifier, height, weight, base_experience,
-        order_index, is_default,
-        evolves_from_species_id, evolution_chain_id,
+        id, height, weight, base_experience,
+        evolves_from_species_id,
         gender_rate, capture_rate, base_happiness,
         is_baby, hatch_counter, has_gender_differences,
         forms_switchable, is_legendary, is_mythical,
         name, generation, region,
         color, color_id,
-        shape, shape_description, habitat,
+        shape, shape_description,
         type1, type1_id,
         type2, type2_id,
         egg_group1, egg_group1_id,
@@ -150,15 +143,14 @@ export function letsGoDatabase(data) {
         special_attack, special_defense, speed
       )
       VALUES (
-        @id, @identifier, @height, @weight, @base_experience,
-        @order_index, @is_default,
-        @evolves_from_species_id, @evolution_chain_id,
+        @id, @height, @weight, @base_experience,
+        @evolves_from_species_id,
         @gender_rate, @capture_rate, @base_happiness,
         @is_baby, @hatch_counter, @has_gender_differences,
         @forms_switchable, @is_legendary, @is_mythical,
         @name, @generation, @region,
         @color, @color_id,
-        @shape, @shape_description, @habitat,
+        @shape, @shape_description,
         @type1, @type1_id,
         @type2, @type2_id,
         @egg_group1, @egg_group1_id,
@@ -187,7 +179,6 @@ export function letsGoDatabase(data) {
       console.log(`[ZYGARDE]=> inserting pokemons.`);
       data.pokemons.forEach(pkmn => insertPokemon.run({
         ...pkmn,
-        is_default: pkmn.is_default ? 1 : 0,
         is_baby: pkmn.is_baby ? 1 : 0,
         has_gender_differences: pkmn.has_gender_differences ? 1 : 0,
         forms_switchable: pkmn.forms_switchable ? 1 : 0,
@@ -215,7 +206,7 @@ export function letsGoDatabase(data) {
     console.log(`[ZYGARDE]=> a simple test to check if data actually exists;`);
 
     const zygarde = db.prepare(`
-      SELECT pokemon.id, identifier AS name, hp, attack, defense, special_attack, special_defense, speed, flavor_text.text AS flavor_text, version.name AS version
+      SELECT pokemon.id, pokemon.name, hp, attack, defense, special_attack, special_defense, speed, flavor_text.text AS flavor_text, version.name AS version
       FROM pokemon
       INNER JOIN flavor_text ON flavor_text.pokemon_id = pokemon.id
       INNER JOIN version ON version.id = flavor_text.version_id
@@ -224,7 +215,7 @@ export function letsGoDatabase(data) {
     `).all();
     console.log({ zygarde })
 
-    if (zygarde[0].name.startsWith("zygarde")) {
+    if (zygarde[0].name.toLowerCase().startsWith("zygarde")) {
       console.log(`[ZYGARDE]=> I found myself, good.`)
     } else {
       throw new Error("Queried pokemon #718 does not match expected data.")
@@ -232,7 +223,7 @@ export function letsGoDatabase(data) {
 
     const count_pokemon = db.prepare(`SELECT COUNT(id) FROM pokemon as count_pokemon`).pluck().get();
     console.log({ count_pokemon })
-    if (count >= 1025) {
+    if (count_pokemon >= 1025) {
       console.log(`[ZYGARDE]=> 1025 pokemon on record.`)
     } else {
       throw new Error("There are fewer pokemons in record than expected")

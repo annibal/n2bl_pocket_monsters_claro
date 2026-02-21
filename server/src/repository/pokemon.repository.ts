@@ -1,5 +1,5 @@
 import getDB from "@/db/connection";
-import type { Pokemon } from "@/types/pokemon";
+import type { Pokemon, PokemonDatabase } from "@/types/pokemon";
 
 interface FindAllOptions {
   search?: string;
@@ -33,13 +33,13 @@ export class PokemonRepository {
       ? [`%${search}%`, limit, offset]
       : [limit, offset];
 
-    return this.db.prepare(query).all(...params) as Pokemon[];
+    return this.db.prepare(query).all(...params) as PokemonDatabase[];
   }
 
   findById(id: number) {
     return this.db
       .prepare(`SELECT * FROM pokemon WHERE id = ?`)
-      .get(id) as Pokemon | undefined;
+      .get(id) as PokemonDatabase | undefined;
   }
 
   count(search?: string) {
