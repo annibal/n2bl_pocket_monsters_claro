@@ -7,7 +7,7 @@ import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
 
-const DB_PATH = path.resolve("pokemon.db");
+const DB_PATH = path.resolve("server/pokemon.db");
 
 /**
  * 
