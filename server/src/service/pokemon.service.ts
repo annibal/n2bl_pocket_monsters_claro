@@ -1,8 +1,12 @@
+import { FlavorTextRepository } from "@/repository/flavor_text.repository";
 import { PokemonRepository } from "@/repository/pokemon.repository";
-import { Pokemon, PokemonDatabase } from "@/types/pokemon";
+import { Pokemon, PokemonDatabase, toPokemonId } from "@/types/pokemon";
 
 export class PokemonService {
-  constructor(private repository = new PokemonRepository()) {}
+  constructor(
+    private repository = new PokemonRepository(),
+    private flavorTextRepository = new FlavorTextRepository(),
+  ) {}
 
   list(params: any) {
     const page = Math.max(1, Number(params.page) || 1);
@@ -38,19 +42,16 @@ export class PokemonService {
   }
 
   getById(id: string) {
-    const numericId = Number(id);
+    const pokemonId = toPokemonId(id);
+    if (!isFinite(pokemonId)) { throw new Error("Invalid ID"); }
 
-    if (Number.isNaN(numericId)) {
-      throw new Error("Invalid ID");
-    }
+    const pokemon = this.repository.findById(pokemonId);
+    if (!pokemon) { throw new Error("Pokemon not found"); }
 
-    const pokemon = this.repository.findById(numericId);
+    const parsedPokemon = this.map(pokemon);
+    const flavorTexts = this.flavorTextRepository.getPokemonFlavors(pokemonId)
 
-    if (!pokemon) {
-      throw new Error("Pokemon not found");
-    }
-
-    return this.map(pokemon);
+    return { pokemon: parsedPokemon, flavorTexts };
   }
 
   map(pokemon: PokemonDatabase): Pokemon {

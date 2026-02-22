@@ -1,5 +1,8 @@
+export type PokemonId = number & { readonly __brand: 'PokemonId' }
+export const toPokemonId = (id: number | string): PokemonId => Number(id) as PokemonId
+
 export interface PokemonDatabase {
-  id:                      number;
+  id:                      PokemonId;
   height:                  number;
   weight:                  number;
   base_experience:         number;
@@ -44,21 +47,21 @@ export interface PokemonDatabase {
 }
 
 export interface Pokemon {
-  id:                      number;
+  id:                      PokemonId;
   height:                  number;
   weight:                  number;
-  baseExperience:         number;
-  evolvesFrom: number;
+  baseExperience:          number;
+  evolvesFrom:             number;
 
-  genderRate:             number;
-  captureRate:            number;
-  baseHappiness:          number;
-  isBaby:                 boolean;
-  hatchCounter:           number;
-  hasGenderDiff:  Boolean;
-  isFormsSwitchable:        boolean;
-  isLegendary:            boolean;
-  isMythical:             boolean;
+  genderRate:              number;
+  captureRate:             number;
+  baseHappiness:           number;
+  isBaby:                  boolean;
+  hatchCounter:            number;
+  hasGenderDiff:           boolean;
+  isFormsSwitchable:       boolean;
+  isLegendary:             boolean;
+  isMythical:              boolean;
 
   name:                    string;
   generation:              string;
