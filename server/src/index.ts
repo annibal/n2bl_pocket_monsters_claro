@@ -39,6 +39,10 @@ const server = http.createServer((req, res) => {
     log(`Parts: ${parts.join("|")}`)
 
     if (parts[1] === "pokemons") {
+      if (parts[2] === "filters") {
+        return pkmnController.listFilters(req, res)
+      }
+      
       return pkmnController.list(req, res);
     }
 

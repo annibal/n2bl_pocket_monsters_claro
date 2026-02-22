@@ -53,4 +53,10 @@ export class PokemonRepository {
       .prepare(`SELECT COUNT(*) as total FROM pokemon`)
       .get() as { total: number };
   }
+
+  getUniques(column: string) {
+    return this.db.prepare(
+      `SELECT DISTINCT ${column} AS distinct_values FROM pokemon`
+    ).all();
+  }
 }

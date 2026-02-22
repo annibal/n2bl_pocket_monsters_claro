@@ -42,4 +42,19 @@ export class PokemonController {
       res.end(JSON.stringify({ error: err.message }));
     }
   }
+
+  async listFilters(req: IncomingMessage, res: ServerResponse) {
+    log(`PokemonController.listFilters`)
+
+    try {
+      const result = service.listFilters();
+
+      res.statusCode = 200;
+      res.end(JSON.stringify(result));
+    } catch (err) {
+      console.log(err)
+      res.statusCode = 500;
+      res.end(JSON.stringify({ error: "Server Error", err }));
+    }
+  }
 }
