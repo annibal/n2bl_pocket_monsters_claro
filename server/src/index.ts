@@ -20,13 +20,14 @@ const server = http.createServer((req, res) => {
   if (req.method === "GET" && req.url.startsWith("/api")) {
     log("Is api request ✅");
     const parts = req.url.split("/").filter(Boolean);
+    log(`Parts: ${parts.join("|")}`)
 
     if (parts[1] === "pokemons") {
       return pkmnController.list(req, res);
     }
 
     if (parts[1] === "pokemon") {
-      const id = parts[3] || "";
+      const id = parts[2] || "";
       return pkmnController.getById(req, res, id);
     }
   }

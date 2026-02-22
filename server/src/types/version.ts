@@ -3,7 +3,7 @@ export const toVersionId = (id: string): VersionId => id as VersionId
 
 export type VersionDatabase = {
   id: VersionId;
-  text: string;
+  name: string;
 }
 
 export type Version = string | null;

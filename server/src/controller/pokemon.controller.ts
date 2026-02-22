@@ -25,7 +25,7 @@ export class PokemonController {
     res: ServerResponse,
     id: string
   ) {
-    log("PokemonController.getById")
+    log(`PokemonController.getById "${id}"`)
     try {
       const result = service.getById(id);
 
