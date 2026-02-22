@@ -1,21 +1,26 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "@/styles/index.css";
+import "@/styles/ui.scss";
 import Home from "@/pages/Home";
 import PokemonDetails from "@/pages/pokemon/PokemonDetails";
-
-const apiUrl = import.meta.env.VITE_API_URL;
+import Layout from "@/components/Layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home apiUrl={apiUrl} />
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/pokemon/:id",
+        element: <PokemonDetails />,
+      },
+    ],
   },
-  {
-    path: "/pokemon/:id",
-    element: <PokemonDetails />
-  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

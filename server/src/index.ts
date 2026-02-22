@@ -8,7 +8,20 @@ const PORT = Number(process.env.SERVER_PORT) || 3001;
 const pkmnController = new PokemonController();
 
 const server = http.createServer((req, res) => {
-  res.setHeader("Content-Type", "application/json");
+  const headers = {
+    'Access-Control-Allow-Origin': '*', /* @dev First, read about security */
+    'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+    'Access-Control-Max-Age': 2592000, // 30 days
+    /** add other headers as per requirement */
+  };
+
+  
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, headers);
+    res.end();
+    return;
+  }
+
   log("Received Request:", req.method, req.url);
 
   if (!req.url) {
@@ -18,8 +31,11 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === "GET" && req.url.startsWith("/api")) {
+    Object.entries(headers).forEach(([headerName, headerValue]) => {
+      res.appendHeader(headerName, headerValue as any);
+    })
     log("Is api request ✅");
-    const parts = req.url.split("/").filter(Boolean);
+    const parts = (req.url.split("?")[0] as string).split("/").filter(Boolean);
     log(`Parts: ${parts.join("|")}`)
 
     if (parts[1] === "pokemons") {

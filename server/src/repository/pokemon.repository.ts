@@ -1,7 +1,7 @@
 import getDB from "@/db/connection";
 import type { Pokemon, PokemonDatabase } from "@/types/pokemon";
 
-interface FindAllOptions {
+export interface FindAllOptions {
   search?: string;
   page: number;
   limit: number;

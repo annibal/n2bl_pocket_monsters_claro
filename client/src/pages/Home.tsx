@@ -1,26 +1,27 @@
-import { useState } from 'react'
-import reactLogo from '@/assets/react.svg'
-import viteLogo from '/vite.svg'
-import '@/styles/App.css'
+import { useState } from "react";
+import usePokemons from "@/components/usePokemons";
+import useEnv from "@/components/EnvContext";
+import { NavLink } from "react-router";
 
-export default function Home({ apiUrl }: { apiUrl: string}) {
-  const [count, setCount] = useState(0)
+export default function Home() {
+  const [count, setCount] = useState(0);
+  const { pokemons } = usePokemons({});
+  const { apiUrl } = useEnv();
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
+        {/* <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        </a> */}
       </div>
       <h1>Vite + React</h1>
+      <NavLink to="/pokemon/123">Pokemon 123</NavLink>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -29,9 +30,10 @@ export default function Home({ apiUrl }: { apiUrl: string}) {
         API URL is:
         <b>{apiUrl}</b>
       </p>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <code>
+        <pre>{JSON.stringify(pokemons, null, 2)}</pre>
+      </code>
     </>
-  )
+  );
 }

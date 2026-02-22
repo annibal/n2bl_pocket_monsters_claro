@@ -1,3 +1,4 @@
+import { FindAllOptions } from "@/repository/pokemon.repository";
 import { PokemonService } from "@/service/pokemon.service";
 import log from "@/utils/logger";
 import type { IncomingMessage, ServerResponse } from "node:http";
@@ -7,10 +8,10 @@ const service = new PokemonService();
 export class PokemonController {
   async list(req: IncomingMessage, res: ServerResponse) {
     log("PokemonController.list")
-    const query = {};
+    const query = Object.fromEntries(new URLSearchParams((req.url || "").split("?")[1] || "").entries());
 
     try {
-      const result = service.list(query);
+      const result = service.list(query as unknown as FindAllOptions);
 
       res.statusCode = 200;
       res.end(JSON.stringify(result));

@@ -1,5 +1,5 @@
 import { FlavorTextRepository } from "@/repository/flavor_text.repository";
-import { PokemonRepository } from "@/repository/pokemon.repository";
+import { FindAllOptions, PokemonRepository } from "@/repository/pokemon.repository";
 import { Pokemon, PokemonDatabase, toPokemonId } from "@/types/pokemon";
 
 export class PokemonService {
@@ -8,14 +8,14 @@ export class PokemonService {
     private flavorTextRepository = new FlavorTextRepository(),
   ) {}
 
-  list(params: any) {
+  list(params: FindAllOptions) {
     const page = Math.max(1, Number(params.page) || 1);
     const limit = Math.min(50, Number(params.limit) || 20);
 
     const search = params.search?.trim() || undefined;
 
-    const orderBy = ["id", "name"].includes(params.orderBy)
-      ? params.orderBy
+    const orderBy = ["id", "name"].includes(params.orderBy!)
+      ? params.orderBy as ("id" | "name")
       : "id";
 
     const orderDir = params.orderDir === "desc" ? "desc" : "asc";
@@ -23,7 +23,7 @@ export class PokemonService {
     const data = this.repository.findAll({
       page,
       limit,
-      search,
+      search: search || "",
       orderBy,
       orderDir
     }).map(pokemon => this.map(pokemon));
