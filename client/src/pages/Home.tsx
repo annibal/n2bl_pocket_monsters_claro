@@ -1,4 +1,5 @@
 import HeaderLogo from "@/components/HeaderLogo";
+import { NavLink } from "react-router-dom"
 // import { useState } from "react";
 // import { NavLink } from "react-router";
 
@@ -13,7 +14,7 @@ export default function Home() {
             <input id="home-search" type="search" name="search" placeholder="Search Pokemons" />
             <button type="submit" id="home-submit">Go</button>
           </div>
-          <button type="button" id="home-action-list">View All</button>
+          <NavLink to="/pokemon" id="home-action-list">View All</NavLink>
         </form>
       </article>
     </section>

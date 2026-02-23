@@ -37,7 +37,7 @@ export class PokemonRepository {
       ${order}
       ${pagination}
     `;
-    console.log(query)
+    // console.log(query)
 
     const params = []
     if (hasSearch) params.push(`%${search}%`)

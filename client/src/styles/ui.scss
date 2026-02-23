@@ -67,6 +67,7 @@ div#main-row {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  flex-grow: 1;
 }
 
 main {
@@ -123,6 +124,8 @@ h6 {
     transition: opacity 600ms ease-out, right 600ms ease-in;
     right: -100vw;
     opacity: 0;
+    touch-action: none;
+    pointer-events: none;
   }
 }
 
@@ -520,9 +523,10 @@ div#pagination {
   gap: 1rem;
   align-items: center;
   padding: 0.3rem 1rem;
+  height: 45px;
 }
 
-a.pagination__button {
+.pagination__button {
   display: block;
   white-space: nowrap;
   color: inherit;
@@ -531,6 +535,9 @@ a.pagination__button {
   border-radius: 0.5rem;
   background: #00000070;
   user-select: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
   
   &.disabled {
     touch-action: none;
@@ -578,7 +585,9 @@ a.pagination__button {
 
 
 section#home {
+  width: 100%;
   max-width: 768px;
+  padding: 0 1rem;
   margin: auto;
   position: relative;
 }
@@ -614,6 +623,7 @@ input#home-search {
   color: white;
   font-family: inherit;
   height: 40px;
+  width: 100%;
 }
 
 button#home-submit {
@@ -630,7 +640,7 @@ button#home-submit {
   cursor: pointer;
   min-width: 70px;
 }
-button#home-action-list {
+#home-action-list {
   height: 40px;
   display: block;
   background: royalblue;
@@ -642,7 +652,11 @@ button#home-action-list {
   border-radius: 0.5rem;
   padding: 0 0.7rem 0 1.1rem;
   cursor: pointer;
+  display: flex;
   min-width: 150px;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
 }
 
 .search-combo {

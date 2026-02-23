@@ -49,7 +49,7 @@ export default function usePokemons(props: UsePokemonsProps): UsePokemonsReturn 
     url = `${url}?${query.toString()}`;
   }
 
-  console.log(`usePokemons "${url}"`);
+  // console.log(`usePokemons "${url}"`);
   useEffect(() => {
     setIsLoading(true);
     setError("");

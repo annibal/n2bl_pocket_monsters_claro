@@ -1,4 +1,5 @@
-import { useSearchParams, NavLink } from "react-router";
+import type { MouseEvent } from "react"
+import { useSearchParams } from "react-router";
 import PokemonListItem from "@/components/PokemonListItem";
 import usePokemons from "@/components/usePokemons";
 import type { Pokemon } from "@/types/Pokemon";
@@ -16,17 +17,25 @@ export default function PokemonList() {
   const hasPrev = meta.page > 1
   const hasNext = meta.page < meta.totalPages
 
-  function navPrev() {
+  function navPrev(evt: MouseEvent<HTMLButtonElement>) {
+    console.log('navPrev');
+    evt.preventDefault();
     if (!hasPrev) return;
     setSearchParams((searchParams) => {
-      searchParams.set("page", String(meta.page - 1));
+      const newPage = meta.page - 1
+      console.log('newPage :>> ', newPage);
+      searchParams.set("page", String(newPage));
       return searchParams;
     })
   }
-  function navNext() {
+  function navNext(evt: MouseEvent<HTMLButtonElement>) {
+    console.log('navNext');
+    evt.preventDefault();
     if (!hasNext) return;
     setSearchParams((searchParams) => {
-      searchParams.set("page", String(meta.page + 1));
+      const newPage = meta.page + 1
+      console.log('newPage :>> ', newPage);
+      searchParams.set("page", String(newPage));
       return searchParams;
     })
   }
@@ -39,9 +48,9 @@ export default function PokemonList() {
         ))}
       </ul>
       <div id="pagination">
-        <a onClick={navPrev} className={`pagination__button pagination__button--previous ${hasPrev ? "" : "disabled"}`}>
+        <button onClick={navPrev} type="button" className={`pagination__button pagination__button--previous ${hasPrev ? "" : "disabled"}`}>
           🡰 Previous
-        </a>
+        </button>
 
         <span className="pagination--text">
           <span className="desktop-only">Showing </span>
@@ -52,9 +61,9 @@ export default function PokemonList() {
           <span className="desktop-only"> pokemons.</span>
         </span>
 
-        <a onClick={navNext} className={`pagination__button pagination__button--next ${hasNext ? "" : "disabled"}`}>
+        <button onClick={navNext} type="button" className={`pagination__button pagination__button--next ${hasNext ? "" : "disabled"}`}>
           Next 🡲
-        </a>
+        </button>
       </div>
     </>
   );
