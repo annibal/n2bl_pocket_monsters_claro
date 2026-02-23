@@ -4,7 +4,7 @@ import usePokemons from "@/components/usePokemons";
 import type { Pokemon } from "@/types/Pokemon";
 
 export default function PokemonList() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { pokemons, meta } = usePokemons({
     page: (searchParams.get("page") || 0) as number | undefined
   });

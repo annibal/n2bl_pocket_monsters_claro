@@ -18,18 +18,12 @@ export default function Layout() {
         </header>
         <nav onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
           <div>
-            Search
-          </div>
-          <div className="icon-button">
-            Fil
-          </div>
-          <div className="icon-button">
-            Ord
+            Buscar
           </div>
         </nav>
       </div>
       <div id="main-row">
-        <Sidebar isOpen={isSidebarOpen} />
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         <main>
           <Outlet />
         </main>

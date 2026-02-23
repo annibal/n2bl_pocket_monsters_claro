@@ -30,11 +30,11 @@ div#top-bar {
   justify-content: space-between;
   background: #ffffff10;
   padding: 0.7rem 1rem;
-  margin: 1rem 0 0 0;
+  margin: 0;
   border-radius: 0 0 0.8rem 0.8rem;
   align-items: center;
   gap: 1rem;
-  flex-grow: 1;
+  flex: 0 1 auto;
 }
 
 #top-bar nav {
@@ -42,18 +42,13 @@ div#top-bar {
   flex-grow: 1;
   align-items: center;
   gap: inherit;
+  justify-content: flex-end;
 }
 
 input#nav-search {
   flex-grow: 1;
 }
 
-aside#sidebar {
-  position: absolute;
-  background: green;
-  min-width: 250px;
-  padding: 1rem 0.5rem;
-}
 
 div#main-row {
   position: relative;
@@ -69,28 +64,12 @@ main {
   overflow: hidden;
 }
 
-div#pagination {
-  height: 100px;
-  background: #FFFFFF15;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  align-items: center;
-  padding: 0.3rem 1rem;
-}
-
 main > ul {
   flex-grow: 1;
   overflow: auto;
   overflow-x: hidden;
   margin: 0;
 }
-
-.sidebar__header-text {
-  /* display: flex; */
-  margin: 0;
-}
-
 p,
 h1,
 h2,
@@ -114,10 +93,46 @@ h6 {
   }
 }
 
+#sidebar {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #1c1c1c45;
+  transition: opacity 600ms ease, right 1ms linear;
+  z-index: 1;
+  
+  &.visible {
+    right: 0;
+    opacity: 1;
+  }
+  
+  &.hidden {
+    transition: opacity 600ms ease-out, right 600ms ease-in;
+    right: -100vw;
+    opacity: 0;
+  }
+}
+
+.sidebar-content {
+  position: absolute;
+  right: inherit;
+  top: 0;
+  height: 100%;
+  overflow: scroll;
+  background: #1c1c1c;
+  min-width: 250px;
+  width: 90%;
+  max-width: 560px;
+  padding: 0 0.5rem 1rem 0.5rem;
+  transition: right 600ms ease;
+}
+
 header.sidebar__header {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  margin: 0;
   margin-bottom: 0.5rem;
 }
 
@@ -156,12 +171,44 @@ section.sidebar-section + section.sidebar-section {
   margin-bottom: 0;
 }
 
-aside#sidebar.visible {
-  right: 0;
+header.sidebar__top-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 -0.5rem;
+  align-items: center;
+  border-bottom: 2px solid #FFFFFF88;
+  margin-bottom: 1rem;
 }
 
-aside#sidebar.hidden {
-  right: -100vw;
+h4.sidebar__header-text {
+  margin: 0;
+  padding-inline-start: 1rem;
+  font-size: 1.5rem;
+}
+
+button.sidebar__close {
+  width: 2.2em;
+  height: 2em;
+  border: none;
+  font-size: 1.5rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: white;
+  background: none;
+
+  &:hover {
+    background: #000000AA;
+    cursor: pointer;
+  }
+}
+
+// _____________________
+
+ul {
+  padding: 0;
 }
 
 li.pkmn-li {
@@ -169,12 +216,6 @@ li.pkmn-li {
   align-items: center;
   border-bottom: 1px solid gray;
   padding: 0 0.5rem;
-}
-
-// _____________________
-
-ul {
-  padding: 0;
 }
 
 img.pkmn-li__image {
@@ -392,21 +433,18 @@ p.pkmn-det__flavor-texts-heading {
   margin-bottom: 1.5rem;
 }
 
-a.pagination--previous, a.pagination--next {
-  display: block;
-  padding: 0.5rem 1.2rem;
-  background: #00000070;
-  border-radius: 0.5rem;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  white-space: nowrap;
+// -------------
+
+div#pagination {
+  height: 100px;
+  background: #FFFFFF15;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.3rem 1rem;
 }
 
-a.pagination--previous:hover, a.pagination--next:hover {
-  background: #000000AA;
-  text-decoration: underline;
-}
 a.pagination__button {
   display: block;
   white-space: nowrap;
@@ -415,4 +453,17 @@ a.pagination__button {
   padding: 0.5rem 1.1rem;
   border-radius: 0.5rem;
   background: #00000070;
+  user-select: none;
+  
+  &.disabled {
+    touch-action: none;
+    pointer-events: none;
+    opacity: .4;
+    cursor: default;
+  }
+
+  &:hover {
+    background: #000000AA;
+    text-decoration: underline;
+  }
 }
