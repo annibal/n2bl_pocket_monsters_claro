@@ -4,10 +4,36 @@ Pokedex Test for Fullstack job position
 ## Getting Started
 Instructions to run this project locally
 
+1. Copy `server/.env.example` to `server/.env` and `client/.env.example` to `client/.env`:
+
+```sh
+mv server/.env.example server/.env;
+mv client/.env.example client/.env;
+```
+
+2. Run the npm command `bootstrap` to copy data from PokeAPI csv's into the local SQLite database:
+
+```sh
+npm run bootstrap
+```
+
+Alternatively, you can run the same command using it's alias `arceus`.
+
+3. Should the previous command successfully run, start the local projects by running the `dev` command:
+
+```sh
+npm run dev
+```
+
+this should concurrently run both `client` and `server` on the same tty.
 
 
 ## Requirements
 
+- Node.js, compatible with version 24;
+- An UNIX Shell (recommendation: `zsh`)
+
+> `git` is not listed as an requirement since the reader is either viewing this document in `GitHub` or in its local development machine, and the latter implies the repository has already been cloned using `git`.
 
 
 ## Decisions
