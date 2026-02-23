@@ -6,18 +6,6 @@
   box-sizing: border-box;
 }
 
-div#top-bar {
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  background: #ffffff10;
-  padding: 0.7rem 1rem;
-  margin: 1rem 0 0 0;
-  border-radius: 0.5rem;
-  align-items: center;
-  gap: 1rem;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -31,6 +19,22 @@ body {
 div#root-layout {
   max-width: 1200px;
   margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+div#top-bar {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  background: #ffffff10;
+  padding: 0.7rem 1rem;
+  margin: 1rem 0 0 0;
+  border-radius: 0 0 0.8rem 0.8rem;
+  align-items: center;
+  gap: 1rem;
+  flex-grow: 1;
 }
 
 #top-bar nav {
@@ -53,8 +57,33 @@ aside#sidebar {
 
 div#main-row {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+div#pagination {
+  height: 100px;
+  background: #FFFFFF15;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.3rem 1rem;
+}
+
+main > ul {
+  flex-grow: 1;
+  overflow: auto;
   overflow-x: hidden;
-  overflow-y: auto;
+  margin: 0;
 }
 
 .sidebar__header-text {
@@ -71,6 +100,18 @@ h5,
 h6 {
   margin: 0;
   margin-bottom: 1rem;
+}
+
+@media(max-width: 768px) {
+  span.desktop-only {
+    display: none;
+  }
+}
+
+@media(min-width: 767px) {
+  span.mobile-only {
+    display: none;
+  }
 }
 
 header.sidebar__header {
@@ -130,6 +171,8 @@ li.pkmn-li {
   padding: 0 0.5rem;
 }
 
+// _____________________
+
 ul {
   padding: 0;
 }
@@ -148,6 +191,7 @@ p.pkmn-li__name {
 
 .pkmn-li__secondary-col {
   margin-inline-start: auto;
+  padding-inline-end: 0.5rem;
 }
 
 p.pkmn-li__desc {
@@ -179,8 +223,29 @@ p.pkmn-li__number {
   /* flex-direction: column; */
 }
 
+.pkmn-li__link {
+  display: contents;
+  color: inherit;
+}
+
+li.pkmn-li:hover {
+  text-decoration: underline;
+}
+
+// _____________________
+
 header#header-n2bl {
   position: relative;
+}
+
+header#header-n2bl a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header#header-n2bl a:hover {
+  text-decoration: underline;
+  opacity: .7;
 }
 
 span#header__national {
@@ -220,4 +285,134 @@ span#header__o:after {
   content: "-";
   border-bottom: 0.2rem solid white;
   border-left: 0.2rem solid white;
+}
+
+// ---------------------
+
+
+.pkmn-details {
+  overflow: auto;
+  padding-bottom: 10vh;
+}
+
+figure.pkmn-det__figure {
+  margin: 0;
+}
+
+img.pkmn-det__image {
+  width: 1em;
+  height: 1em;
+  font-size: 30rem;
+  margin: 0 auto;
+  margin-bottom: -2rem;
+  margin-top: -2rem;
+}
+
+header.pkmn-det__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+h1.pkmn-det__name {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+h2.pkmn-det__number {
+  font-size: 1.4rem;
+  opacity: .6;
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.col {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #FFFFFF33;
+  padding: 0.5rem 0.2rem;
+}
+
+p.prop-title {
+  margin-bottom: 0.2rem;
+  font-family: 'Jersey 10', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 1.2rem;
+  text-shadow: 0 0 2px black, 0 0 2px black;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #FFFFFF33;
+}
+
+p.prop-value {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.pkmn-det__shape {
+  padding: 0.5rem 1rem;
+  border: 1px solid #FFFFFF33;
+  margin: 0 1rem 1rem 1rem;
+}
+
+p.pkmn-det__shape-desc {
+  margin-bottom: 0.5rem;
+}
+
+.row + .row {
+  padding-top: 0;
+}
+
+.flavor-text__version, .flavor-text__text {
+  padding: 0 1rem 0.5rem 1rem;
+}
+
+.flavor-text__row {
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #FFFFFF33;
+}
+
+p.pkmn-det__flavor-texts-heading {
+  font-size: 1.5rem;
+  padding: 0 1rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+a.pagination--previous, a.pagination--next {
+  display: block;
+  padding: 0.5rem 1.2rem;
+  background: #00000070;
+  border-radius: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+a.pagination--previous:hover, a.pagination--next:hover {
+  background: #000000AA;
+  text-decoration: underline;
+}
+a.pagination__button {
+  display: block;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 0.5rem;
+  background: #00000070;
 }

@@ -11,15 +11,22 @@ export interface UsePokemonsProps {
   orderDir?: "asc" | "desc";
 }
 
-export interface UsePokemonReturn {
+export interface UsePokemonsReturn {
   pokemons: Pokemon[];
   isLoading: boolean;
   error: string | null;
+  meta: {
+    limit: number;
+    page: number;
+    total: number;
+    totalPages: number;
+  }
 }
 
-export default function usePokemons(props: UsePokemonsProps): UsePokemonReturn {
+export default function usePokemons(props: UsePokemonsProps): UsePokemonsReturn {
   const { page = 0, limit = 20, search = "", orderBy = "id", orderDir = "asc" } = props;
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [meta, setMeta] = useState<UsePokemonsReturn["meta"]>({ limit: 0, page: 0, total: 0, totalPages: 0 });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { apiUrl } = useEnv();
@@ -51,6 +58,11 @@ export default function usePokemons(props: UsePokemonsProps): UsePokemonReturn {
           } else {
             throw new Error("Unexpected return structure - cannot find data property");
           }
+          if (r.meta) {
+            setMeta(r.meta);
+          } else {
+            throw new Error("Unexpected return structure - cannot find meta property");
+          }
         });
     } catch (err: unknown) {
       // @ts-expect-error AAAAAAAAAAAAAAAAA
@@ -59,5 +71,5 @@ export default function usePokemons(props: UsePokemonsProps): UsePokemonReturn {
     setIsLoading(false);
   }, [url]);
 
-  return { pokemons, error, isLoading };
+  return { pokemons, meta, error, isLoading };
 }

@@ -9,12 +9,10 @@ const pkmnController = new PokemonController();
 
 const server = http.createServer((req, res) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*', /* @dev First, read about security */
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
-    'Access-Control-Max-Age': 2592000, // 30 days
-    /** add other headers as per requirement */
+    'Access-Control-Max-Age': 2592000,
   };
-
   
   if (req.method === 'OPTIONS') {
     res.writeHead(204, headers);
@@ -24,6 +22,8 @@ const server = http.createServer((req, res) => {
 
   log("Received Request:", req.method, req.url);
 
+  res.setHeader('Content-Type', 'application/json');
+  
   if (!req.url) {
     log("SERVER ERROR: No Url in Request");
     res.statusCode = 400;
