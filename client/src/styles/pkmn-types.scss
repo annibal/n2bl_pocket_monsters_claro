@@ -1,0 +1,38 @@
+.pkmn-type-badge {
+  --type-color: #888;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-family: "Jersey 10", sans-serif;
+  text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black;
+  letter-spacing: 2px;
+  /* padding: 3px 5px; */
+  width: 60px;
+  height: 1rem;
+  display: inline-block;
+  text-align: center;
+  line-height: calc(1rem - 1px);
+  border-radius: 4px;
+  background-color: var(--type-color);
+  border: 1px solid color-mix(in srgb, var(--type-color) 75%, black 25%);
+}
+
+
+.pkmn-type-normal {   --type-color: #aa9; }
+.pkmn-type-fire {     --type-color: #f42; }
+.pkmn-type-water {    --type-color: #39f; }
+.pkmn-type-electric { --type-color: #fc3; }
+.pkmn-type-grass {    --type-color: #7c5; }
+.pkmn-type-ice {      --type-color: #6cf; }
+.pkmn-type-fighting { --type-color: #b54; }
+.pkmn-type-poison {   --type-color: #a59; }
+.pkmn-type-ground {   --type-color: #db5; }
+.pkmn-type-flying {   --type-color: #89f; }
+.pkmn-type-psychic {  --type-color: #f59; }
+.pkmn-type-bug {      --type-color: #ab2; }
+.pkmn-type-rock {     --type-color: #ba6; }
+.pkmn-type-ghost {    --type-color: #66b; }
+.pkmn-type-dragon {   --type-color: #76e; }
+.pkmn-type-dark {     --type-color: #754; }
+.pkmn-type-steel {    --type-color: #aab; }
+.pkmn-type-fairy {    --type-color: #e9e; }
+

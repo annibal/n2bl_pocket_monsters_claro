@@ -68,25 +68,25 @@ export interface Pokemon {
   region:                  string;
 
   color:                   string;
-  color_id:                string;
+  colorId:                 string;
 
   shape:                   string;
-  shape_description:       string;
+  shapeDescription:        string;
 
   type1:                   string;
-  type1_id:                string;
+  type1Id:                 string;
   type2:                   string | null;
-  type2_id:                string | null;
+  type2Id:                 string | null;
 
-  egg_group1:              string;
-  egg_group1_id:           string;
-  egg_group2:              string | null;
-  egg_group2_id:           string | null;
+  eggGroup1:               string;
+  eggGroup1Id:             string;
+  eggGroup2:               string | null;
+  eggGroup2Id:             string | null;
 
   hp:                      number;
   attack:                  number;
   defense:                 number;
-  special_attack:          number;
-  special_defense:         number;
+  specialAttack:           number;
+  specialDefense:          number;
   speed:                   number;
 }

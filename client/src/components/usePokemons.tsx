@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import useEnv from "@/components/EnvContext";
+import type { Pokemon } from "@/types/Pokemon";
 import { useEffect, useState } from "react";
 
 export interface UsePokemonsProps {
@@ -9,9 +11,17 @@ export interface UsePokemonsProps {
   orderDir?: "asc" | "desc";
 }
 
-export default function usePokemons(props: UsePokemonsProps) {
+export interface UsePokemonReturn {
+  pokemons: Pokemon[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+export default function usePokemons(props: UsePokemonsProps): UsePokemonReturn {
   const { page = 0, limit = 20, search = "", orderBy = "id", orderDir = "asc" } = props;
-  const [pokemons, setPokemons] = useState([]);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { apiUrl } = useEnv();
 
   const query = new URLSearchParams();
@@ -28,14 +38,26 @@ export default function usePokemons(props: UsePokemonsProps) {
 
   console.log(`usePokemons "${url}"`);
   useEffect(() => {
-    console.log("Use Effect fetch");
-    fetch(url)
-      .then((r) => r.json())
-      .then((r) => {
-        console.log("r :>> ", r);
-        setPokemons(r);
-      });
+    setIsLoading(true);
+    setError("");
+    setPokemons([]);
+
+    try {
+      fetch(url)
+        .then((r) => r.json())
+        .then((r) => {
+          if (r.data) {
+            setPokemons(r.data);
+          } else {
+            throw new Error("Unexpected return structure - cannot find data property");
+          }
+        });
+    } catch (err: unknown) {
+      // @ts-expect-error AAAAAAAAAAAAAAAAA
+      serError(err?.message || err);
+    }
+    setIsLoading(false);
   }, [url]);
 
-  return { pokemons };
+  return { pokemons, error, isLoading };
 }

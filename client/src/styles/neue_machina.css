@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'NeueMachina';
+  font-weight: light;
+  font-style: normal;
+  src: local('NeueMachina'), url('NeueMachina-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NeueMachina';
+  font-weight: normal;
+  font-style: normal;
+  src: local('NeueMachina'), url('NeueMachina-Regular.otf') format('opentype');
+}
+
+/* @font-face {
+  font-family: 'NeueMachina';
+  font-weight: bolder;
+  font-style: normal;
+  src: local('NeueMachina'), url('NeueMachina-Ultrabold.otf') format('opentype');
+} */

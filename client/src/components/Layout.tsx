@@ -14,7 +14,9 @@ export default function Layout() {
           <span id="header__made-by">by (@N)²iBL</span>
         </header>
         <nav onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-          <input type="search" id="nav-search" placeholder="Buscar" />
+          <div>
+            Search
+          </div>
           <div className="icon-button">
             Fil
           </div>
