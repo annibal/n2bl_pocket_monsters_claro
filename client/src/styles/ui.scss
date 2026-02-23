@@ -1,12 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
 
-*,*:before,*:after {box-sizing: border-box;}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
 
 div#top-bar {
   height: 60px;
   display: flex;
   justify-content: space-between;
-  background: #FFFFFF10;
+  background: #ffffff10;
   padding: 0.7rem 1rem;
   margin: 1rem 0 0 0;
   border-radius: 0.5rem;
@@ -19,7 +23,7 @@ body {
   padding: 0;
   position: relative;
   background: #3c3c3c;
-  color: #EEE;
+  color: #eee;
   font-size: 16px;
   font-family: NeueMachina;
 }
@@ -47,14 +51,27 @@ aside#sidebar {
   padding: 1rem 0.5rem;
 }
 
-div#main-row {position: relative;overflow-x: hidden;overflow-y: scroll;}
+div#main-row {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 .sidebar__header-text {
   /* display: flex; */
   margin: 0;
 }
 
-p,h1,h2,h3,h4,h5,h6 {margin: 0;margin-bottom: 1rem;}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  margin-bottom: 1rem;
+}
 
 header.sidebar__header {
   display: flex;
@@ -67,7 +84,7 @@ section.sidebar-section {
   margin-bottom: 1rem;
   padding: 0.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #FFFFFF44;
+  border-bottom: 1px solid #ffffff44;
   padding-top: 0;
 }
 
@@ -84,7 +101,7 @@ span.sidebar__header-icon {
 
 article.sidebar-widget + article.sidebar-widget {
   margin: 1rem -0.5rem;
-  border-top: 1px solid #FFFFFF22;
+  border-top: 1px solid #ffffff22;
   padding: 0 0.5rem;
 }
 
@@ -105,13 +122,6 @@ aside#sidebar.visible {
 aside#sidebar.hidden {
   right: -100vw;
 }
-
-
-
-
-
-
-
 
 li.pkmn-li {
   display: flex;
@@ -142,7 +152,7 @@ p.pkmn-li__name {
 
 p.pkmn-li__desc {
   font-size: 0.7rem;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .pkmn-li__image-wrapper {
@@ -160,11 +170,54 @@ p.pkmn-li__number {
   font-size: 1.2rem;
   text-align: end;
   margin: 0;
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .pkmn-li__types {
   display: flex;
   gap: 0.2rem;
   /* flex-direction: column; */
+}
+
+header#header-n2bl {
+  position: relative;
+}
+
+span#header__national {
+  font-size: 0.6rem;
+  letter-spacing: 1.4px;
+  font-style: italic;
+  position: absolute;
+  top: -0.3rem;
+  left: 0;
+  opacity: 0.85;
+}
+
+span#header__pokedex {
+  font-size: 1.8rem;
+  letter-spacing: -1px;
+}
+
+span#header__made-by {
+  position: absolute;
+  bottom: -0.3rem;
+  right: 0;
+  font-size: 0.6rem;
+  font-style: italic;
+  letter-spacing: 0.6px;
+  opacity: 0.7;
+}
+
+span#header__o {
+  position: relative;
+}
+
+span#header__o:after {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  content: "-";
+  border-bottom: 0.2rem solid white;
+  border-left: 0.2rem solid white;
 }
