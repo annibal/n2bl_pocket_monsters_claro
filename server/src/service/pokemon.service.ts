@@ -99,19 +99,19 @@ export class PokemonService {
   }
 
   listFilters() {
-    return [
-      "gender_rate",
-      "base_happiness",
-      "is_baby",
-      "has_gender_differences",
-      "generation",
-      "is_legendary",
-      "is_mythical",
-      "region",
-      "color",
+    const data: { shape: string[], type1: string[] } = [
+      // "gender_rate",
+      // "base_happiness",
+      // "is_baby",
+      // "has_gender_differences",
+      // "generation",
+      // "is_legendary",
+      // "is_mythical",
+      // "region",
+      // "color",
       "shape",
       "type1",
-      "egg_group1",
+      // "egg_group1",
     ].reduce(
       (acc, col) => ({
         ...acc,
@@ -122,5 +122,9 @@ export class PokemonService {
       }),
       {}
     );
+    return {
+      shape: data.shape,
+      type: data.type1
+    }
   }
 }

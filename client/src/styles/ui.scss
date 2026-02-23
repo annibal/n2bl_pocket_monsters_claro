@@ -572,3 +572,79 @@ a.pagination__button {
 .wbody__input:hover {
   background: #00000066;
 }
+
+
+
+
+
+section#home {
+  max-width: 768px;
+  margin: auto;
+  position: relative;
+}
+
+section#home  #header-n2bl {
+  width: 125px;
+  display: block;
+  transform: scale(2);
+  margin-bottom: 4rem;
+}
+
+#home article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+#home form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+input#home-search {
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 0.5rem 0 0 0.5rem;
+  padding: 0.2rem 0.6rem;
+  background: #00000088;
+  color: white;
+  font-family: inherit;
+  height: 40px;
+}
+
+button#home-submit {
+  height: 40px;
+  display: block;
+  background: #156b3b;
+  color: white;
+  border: 1px solid #0b4926;
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 2px;
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0 0.7rem 0 1.1rem;
+  cursor: pointer;
+  min-width: 70px;
+}
+button#home-action-list {
+  height: 40px;
+  display: block;
+  background: royalblue;
+  color: white;
+  border: 1px solid #1f44b1;
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 2px;
+  border-radius: 0.5rem;
+  padding: 0 0.7rem 0 1.1rem;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.search-combo {
+  display: flex;
+}

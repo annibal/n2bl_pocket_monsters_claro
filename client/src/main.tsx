@@ -11,14 +11,14 @@ import PokemonList from "@/pages/pokemon/PokemonList";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/pokemon",
     element: <Layout />,
     children: [
       {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/pokemons",
+        path: "/pokemon",
         element: <PokemonList />,
       },
       {

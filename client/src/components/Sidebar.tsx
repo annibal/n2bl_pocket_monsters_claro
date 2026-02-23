@@ -1,5 +1,9 @@
-import type { PropsWithChildren } from "react";
-import { useMemo } from "react";
+import type {
+  PropsWithChildren,
+  // FormEvent
+} from "react";
+import { useSearchParams } from "react-router";
+import { useMemo, useState } from "react";
 import IconFilter from "@/components/svg/IconFilter";
 import IconSort from "@/components/svg/IconSort";
 import usePokemonFilters, { type PokemonFilters } from "@/components/usePokemonFilters";
@@ -12,6 +16,20 @@ export interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { data: tData } = usePokemonFilters();
   const data = tData || ({} as PokemonFilters);
+  const [searchParams] = useSearchParams();
+  const urlFilters = {
+    shape: searchParams.getAll("shape") || [],
+    type: searchParams.getAll("type") || [],
+  }
+  const [stateFilters, setStateFilters] = useState(urlFilters)
+
+  const setSFilter = (key: "shape" | "type", value: string) => {
+    if (stateFilters[key].includes(value)) {
+      setStateFilters({ ...stateFilters, [key]: stateFilters[key].filter(v => v !== value)})
+    } else {
+      setStateFilters({ ...stateFilters, [key]: [...stateFilters[key], value] })
+    }
+  }
 
   const keys = Object.keys(data) as (keyof typeof data)[];
 
@@ -26,7 +44,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     }));
   }, [keys, data]);
 
-  function clearFilters() {}
+  function clearFilters() {
+    setStateFilters({
+      shape: [],
+      type: []
+    })
+  }
   function applyFilters() {}
 
   if (!data) {
@@ -59,7 +82,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               const id = `${filter.filterKey}_${String(fv).replaceAll(" ", "_")}`;
               return (
                 <div className="wbody__input" key={id}>
-                  <input type="checkbox" id={id} name={filter.filterKey} value={String(fv)} />
+                  <input
+                    type="checkbox"
+                    id={id}
+                    name={filter.filterKey}
+                    value={String(fv)}
+                    checked={stateFilters[filter.filterKey as keyof typeof stateFilters].includes(fv as string)}
+                    onChange={() => setSFilter(filter.filterKey as keyof typeof stateFilters, fv as string)}
+                  />
                   <label htmlFor={id}>{fv}</label>
                 </div>
               );
@@ -88,10 +118,35 @@ type SidebarStructureProps = SidebarProps & PropsWithChildren & {
 
 function SidebarStructure(props: SidebarStructureProps) {
   const { children, isOpen, onClose, clearFilters, applyFilters } = props;
+  const [searchParams] = useSearchParams();
+  const [sival, setSival] = useState(searchParams.get("search"))
+  const [sortby, setSortby] = useState(searchParams.get("sort") || "id");
+
+  function _clearFilters() {
+    setSival("");
+    setSortby("id");
+    location.href = "/pokemon"
+    clearFilters();
+  }
+
+  // function handleSubmit(evt: FormEvent<HTMLFormElement>) {
+  //   evt.preventDefault()
+    
+  //   const form = evt.currentTarget;
+  //   const formData = new FormData(form);
+  //   const data = Object.fromEntries(
+  //     Array.from(new Set(formData.keys())).map((key) => [
+  //       key,
+  //       formData.getAll(key),
+  //     ])
+  //   );
+  //   console.log(data)
+
+  // }
 
   return (
     <aside id="sidebar" className={isOpen ? "visible" : "hidden"}>
-      <div className="sidebar-content">
+      <form className="sidebar-content" method="GET" action="/pokemon">
         <header className="sidebar__top-header">
           <h4 className="sidebar__header-text">Search Pokemon</h4>
           <button className="sidebar__close" onClick={onClose}>
@@ -100,7 +155,14 @@ function SidebarStructure(props: SidebarStructureProps) {
         </header>
 
         <section className="sidebar-section">
-          <input type="search" placeholder="Search" name="search" id="textSearch" />
+          <input
+            id="textSearch"
+            type="search"
+            placeholder="Search"
+            name="search"
+            value={sival || ""}
+            onChange={(evt) => setSival(evt.target.value)}
+          />
         </section>
 
         <section className="sidebar-section">
@@ -114,47 +176,91 @@ function SidebarStructure(props: SidebarStructureProps) {
           <article className="sidebar-widget">
             <div className="widget__body">
               <div className="wbody__input">
-                <input type="radio" id="sortby_number" name="sort" value="id" checked/>
+                <input type="radio" id="sortby_number" name="sort"
+                      value="id"
+                      checked={sortby === "id"}
+                      onChange={() => setSortby("id")}
+                      />
                 <label htmlFor="sortby_number">Number</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_name" name="sort" value="name" />
+                <input type="radio" id="sortby_name" name="sort"
+                      value="name"
+                      checked={sortby === "name"}
+                      onChange={() => setSortby("name")}
+                      />
                 <label htmlFor="sortby_name">Name</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_hp" name="sort" value="hp" />
+                <input type="radio" id="sortby_hp" name="sort"
+                      value="hp"
+                      checked={sortby === "hp"}
+                      onChange={() => setSortby("hp")}
+                      />
                 <label htmlFor="sortby_hp">H.P.</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_attack" name="sort" value="attack" />
+                <input type="radio" id="sortby_attack" name="sort"
+                      value="attack"
+                      checked={sortby === "attack"}
+                      onChange={() => setSortby("attack")}
+                      />
                 <label htmlFor="sortby_attack">Attack</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_defense" name="sort" value="defense" />
+                <input type="radio" id="sortby_defense" name="sort"
+                      value="defense"
+                      checked={sortby === "defense"}
+                      onChange={() => setSortby("defense")}
+                      />
                 <label htmlFor="sortby_defense">Defense</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_spattack" name="sort" value="special_attack" />
+                <input type="radio" id="sortby_spattack" name="sort"
+                      value="special_attack"
+                      checked={sortby === "special_attack"}
+                      onChange={() => setSortby("special_attack")}
+                      />
                 <label htmlFor="sortby_spattack">Sp. Attack</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_spdefense" name="sort" value="special__defense" />
+                <input type="radio" id="sortby_spdefense" name="sort"
+                      value="special__defense"
+                      checked={sortby === "special__defense"}
+                      onChange={() => setSortby("special__defense")}
+                      />
                 <label htmlFor="sortby_spdefense">Sp. Defense</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_speed" name="sort" value="speed" />
+                <input type="radio" id="sortby_speed" name="sort"
+                      value="speed"
+                      checked={sortby === "speed"}
+                      onChange={() => setSortby("speed")}
+                      />
                 <label htmlFor="sortby_speed">Speed</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_basexp" name="sort" value="base_experience" />
+                <input type="radio" id="sortby_basexp" name="sort"
+                      value="base_experience"
+                      checked={sortby === "base_experience"}
+                      onChange={() => setSortby("base_experience")}
+                      />
                 <label htmlFor="sortby_basexp">Base Exp.</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_height" name="sort" value="height" />
+                <input type="radio" id="sortby_height" name="sort"
+                      value="height"
+                      checked={sortby === "height"}
+                      onChange={() => setSortby("height")}
+                      />
                 <label htmlFor="sortby_height">Height</label>
               </div>
               <div className="wbody__input">
-                <input type="radio" id="sortby_weight" name="sort" value="weight" />
+                <input type="radio" id="sortby_weight" name="sort"
+                      value="weight"
+                      checked={sortby === "weight"}
+                      onChange={() => setSortby("weight")}
+                      />
                 <label htmlFor="sortby_weight">Weight</label>
               </div>
             </div>
@@ -168,14 +274,14 @@ function SidebarStructure(props: SidebarStructureProps) {
         {/* ____ */}
 
         <footer className="sidebar__footer">
-          <button id="sidebar-footer__clear" onClick={clearFilters} type="button">
+          <button id="sidebar-footer__clear" onClick={_clearFilters} type="reset">
             Clear
           </button>
-          <button id="sidebar-footer__apply" onClick={applyFilters} type="button">
+          <button id="sidebar-footer__apply" onClick={applyFilters} type="submit">
             Apply
           </button>
         </footer>
-      </div>
+      </form>
     </aside>
   );
 }

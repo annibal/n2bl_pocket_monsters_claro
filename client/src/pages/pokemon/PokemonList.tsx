@@ -6,7 +6,11 @@ import type { Pokemon } from "@/types/Pokemon";
 export default function PokemonList() {
   const [searchParams] = useSearchParams();
   const { pokemons, meta } = usePokemons({
-    page: (searchParams.get("page") || 0) as number | undefined
+    page: (searchParams.get("page") || 0) as number | undefined,
+    search: searchParams.get("search") || undefined,
+    orderBy: searchParams.get("sort") || undefined,
+    shape: searchParams.getAll("shape") || [],
+    type: searchParams.getAll("type") || [],
   });
 
   const hasPrev = meta.page > 1

@@ -7,8 +7,9 @@ export interface UsePokemonsProps {
   search?: string;
   page?: number;
   limit?: number;
-  orderBy?: "name" | "id";
-  orderDir?: "asc" | "desc";
+  orderBy?: string;
+  shape?: string[];
+  type?: string[];
 }
 
 export interface UsePokemonsReturn {
@@ -24,7 +25,7 @@ export interface UsePokemonsReturn {
 }
 
 export default function usePokemons(props: UsePokemonsProps): UsePokemonsReturn {
-  const { page = 0, limit = 20, search = "", orderBy = "id", orderDir = "asc" } = props;
+  const { page = 0, limit = 20, search = "", orderBy = "id", shape, type } = props;
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [meta, setMeta] = useState<UsePokemonsReturn["meta"]>({ limit: 0, page: 0, total: 0, totalPages: 0 });
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +37,12 @@ export default function usePokemons(props: UsePokemonsProps): UsePokemonsReturn 
   query.append("limit", String(limit));
   query.append("search", search);
   query.append("orderBy", orderBy);
-  query.append("orderDir", orderDir);
+  if (shape) {
+    query.append("shape", shape.join(","));
+  }
+  if (type) {
+    query.append("type", type.join(","));
+  }
 
   let url = `${apiUrl}/pokemons`;
   if (query.toString().length > 0) {
