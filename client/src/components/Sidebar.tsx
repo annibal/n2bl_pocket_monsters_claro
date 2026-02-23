@@ -1,27 +1,120 @@
+import type { PropsWithChildren } from "react";
+import { useMemo } from "react";
+import IconFilter from "@/components/svg/IconFilter";
+import IconSort from "@/components/svg/IconSort";
+import usePokemonFilters, { type PokemonFilters } from "@/components/usePokemonFilters";
+
 export interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
-  
+  const { data: tData } = usePokemonFilters();
+  const data = tData || ({} as PokemonFilters);
+
+  const keys = Object.keys(data) as (keyof typeof data)[];
+
+  const filters = useMemo(() => {
+    return keys.map((key) => ({
+      filterKey: key,
+      filterName: key
+        .split("_")
+        .map((part) => part.slice(0, 1).toUpperCase() + part.slice(1))
+        .join(" "),
+      filterValues: data[key],
+    }));
+  }, [keys, data]);
+
+  function clearFilters() {}
+  function applyFilters() {}
+
+  if (!data) {
+    return (
+      <SidebarStructure
+        isOpen={isOpen}
+        onClose={onClose}
+        applyFilters={applyFilters}
+        clearFilters={clearFilters}
+      />
+    );
+  }
+
+  const filtersContent = (
+    <section className="sidebar-section">
+      <header className="sidebar__header">
+        <span className="sidebar__header-icon">
+          <IconFilter />
+        </span>
+        <h5 className="sidebar__header-text">Filters</h5>
+      </header>
+
+      {filters.map((filter) => (
+        <article className="sidebar-widget" key={filter.filterKey}>
+          <header className="widget__header">
+            <h6 className="widget__header-text">{filter.filterName}</h6>
+          </header>
+          <div className="widget__body">
+            {filter.filterValues.map((fv) => {
+              const id = `${filter.filterKey}_${String(fv).replaceAll(" ", "_")}`;
+              return (
+                <div className="wbody__input" key={id}>
+                  <input type="checkbox" id={id} name={filter.filterKey} value={String(fv)} />
+                  <label htmlFor={id}>{fv}</label>
+                </div>
+              );
+            })}
+          </div>
+        </article>
+      ))}
+    </section>
+  );
+
+  return (
+    <SidebarStructure
+      clearFilters={clearFilters}
+      applyFilters={applyFilters}
+      isOpen={isOpen}
+      onClose={onClose}
+      children={filtersContent}
+    />
+  );
+}
+
+type SidebarStructureProps = SidebarProps & PropsWithChildren & {
+  clearFilters: () => void;
+  applyFilters: () => void
+};
+
+function SidebarStructure(props: SidebarStructureProps) {
+  const { children, isOpen, onClose, clearFilters, applyFilters } = props;
+
   return (
     <aside id="sidebar" className={isOpen ? "visible" : "hidden"}>
       <div className="sidebar-content">
         <header className="sidebar__top-header">
-          <h4 className="sidebar__header-text">Busca</h4>
-          <button className="sidebar__close" onClick={onClose}>🗙</button>
+          <h4 className="sidebar__header-text">Search Pokemon</h4>
+          <button className="sidebar__close" onClick={onClose}>
+            🗙
+          </button>
         </header>
+
+        <section className="sidebar-section">
+          <input type="search" placeholder="Search" name="search" id="textSearch" />
+        </section>
+
         <section className="sidebar-section">
           <header className="sidebar__header">
-            <span className="sidebar__header-icon">O</span>
-            <h5 className="sidebar__header-text">Ordenação</h5>
+            <span className="sidebar__header-icon">
+              <IconSort />
+            </span>
+            <h5 className="sidebar__header-text">Sort by</h5>
           </header>
 
           <article className="sidebar-widget">
             <div className="widget__body">
               <div className="wbody__input">
-                <input type="radio" id="sortby_number" name="sort" value="id" />
+                <input type="radio" id="sortby_number" name="sort" value="id" checked/>
                 <label htmlFor="sortby_number">Number</label>
               </div>
               <div className="wbody__input">
@@ -70,77 +163,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         {/* ____ */}
 
-        <section className="sidebar-section">
-          <header className="sidebar__header">
-            <span className="sidebar__header-icon">F</span>
-            <h5 className="sidebar__header-text">Filtros</h5>
-          </header>
+        {children}
 
-          <article className="sidebar-widget">
-            <header className="widget__header">
-              <h6 className="widget__header-text">Região</h6>
-            </header>
-            <div className="widget__body">
-              <div className="wbody__input">
-                <input type="checkbox" id="filter_region_kanto" name="kanto" />
-                <label htmlFor="filter_region_kanto">Kanto</label>
-              </div>
-              <div className="wbody__input">
-                <input type="checkbox" id="filter_region_johto" name="johto" />
-                <label htmlFor="filter_region_johto">Johto</label>
-              </div>
-              <div className="wbody__input">
-                <input type="checkbox" id="filter_region_hoenn" name="hoenn" />
-                <label htmlFor="filter_region_hoenn">Hoenn</label>
-              </div>
-              <div className="wbody__input">
-                <input type="checkbox" id="filter_region_unova" name="unova" />
-                <label htmlFor="filter_region_unova">Unova</label>
-              </div>
-            </div>
-          </article>
+        {/* ____ */}
 
-          <article className="sidebar-widget">
-            <header className="widget__header">
-              <h6 className="widget__header-text">Raridade</h6>
-            </header>
-            <div className="widget__body">
-              <div className="wbody__input">
-                <input type="radio" id="filter_rarity_common" name="rarity" value="common" />
-                <label htmlFor="filter_rarity_common">Common</label>
-              </div>
-              <div className="wbody__input">
-                <input type="radio" id="filter_rarity_legendary" name="rarity" value="legendary" />
-                <label htmlFor="filter_rarity_legendary">Legendary</label>
-              </div>
-              <div className="wbody__input">
-                <input type="radio" id="filter_rarity_mythical" name="rarity" value="mythical" />
-                <label htmlFor="filter_rarity_mythical">Mythical</label>
-              </div>
-            </div>
-          </article>
-
-          <article className="sidebar-widget">
-            <header className="widget__header">
-              <h6 className="widget__header-text">Tipo</h6>
-            </header>
-            <div className="widget__body">Wip</div>
-          </article>
-
-          <article className="sidebar-widget">
-            <header className="widget__header">
-              <h6 className="widget__header-text">Geração</h6>
-            </header>
-            <div className="widget__body">Wip</div>
-          </article>
-
-          <article className="sidebar-widget">
-            <header className="widget__header">
-              <h6 className="widget__header-text">Grupo de Ovo</h6>
-            </header>
-            <div className="widget__body">Wip</div>
-          </article>
-        </section>
+        <footer className="sidebar__footer">
+          <button id="sidebar-footer__clear" onClick={clearFilters} type="button">
+            Clear
+          </button>
+          <button id="sidebar-footer__apply" onClick={applyFilters} type="button">
+            Apply
+          </button>
+        </footer>
       </div>
     </aside>
   );

@@ -17,9 +17,9 @@ export default function Layout() {
           </a>
         </header>
         <nav onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-          <div>
-            Buscar
-          </div>
+          <button id="btn-search">
+            Search
+          </button>
         </nav>
       </div>
       <div id="main-row">

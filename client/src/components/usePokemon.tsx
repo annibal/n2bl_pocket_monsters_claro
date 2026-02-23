@@ -20,7 +20,7 @@ export default function usePokemon(id: number):UsePokemonReturn {
 
   useEffect(() => {
     setIsLoading(true);
-    setError("");
+    setError(null);
     setPokemon(null);
     setFlavorTexts([]);
 
