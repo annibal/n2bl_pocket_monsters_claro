@@ -14,9 +14,11 @@ export class PokemonService {
 
     const search = params.search?.trim() || undefined;
 
-    const orderBy = ["id", "name"].includes(params.orderBy!) ? (params.orderBy as "id" | "name") : "id";
-
+    const orderBy = params.orderBy || "id";
     const orderDir = params.orderDir === "desc" ? "desc" : "asc";
+
+    const filterShape = params.shape || [];
+    const filterType = params.type || [];
 
     const data = this.repository
       .findAll({
@@ -25,6 +27,8 @@ export class PokemonService {
         search: search || "",
         orderBy,
         orderDir,
+        shape: filterShape,
+        type: filterType,
       })
       .map((pokemon) => this.map(pokemon));
 
@@ -99,7 +103,7 @@ export class PokemonService {
   }
 
   listFilters() {
-    const data: { shape: string[], type1: string[] } = [
+    const data = [
       // "gender_rate",
       // "base_happiness",
       // "is_baby",
@@ -121,7 +125,7 @@ export class PokemonService {
           .sort(),
       }),
       {}
-    );
+    ) as  { shape: string[], type1: string[] };
     return {
       shape: data.shape,
       type: data.type1

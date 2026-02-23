@@ -9,6 +9,9 @@ export class PokemonController {
   async list(req: IncomingMessage, res: ServerResponse) {
     log("PokemonController.list")
     const query = Object.fromEntries(new URLSearchParams((req.url || "").split("?")[1] || "").entries());
+    
+    if (query.shape) { query.shape = query.shape.split(",") as unknown as string }
+    if (query.type) { query.type = query.type.split(",") as unknown as string }
 
     try {
       const result = service.list(query as unknown as FindAllOptions);
@@ -16,8 +19,9 @@ export class PokemonController {
       res.statusCode = 200;
       res.end(JSON.stringify(result));
     } catch (err) {
-      res.statusCode = 400;
-      res.end(JSON.stringify({ error: "Bad Request" }));
+      res.statusCode = 500;
+      res.end(JSON.stringify({ error: "Bad Server Code" }));
+      console.error(err)
     }
   }
 

@@ -7,19 +7,28 @@ export interface FindAllOptions {
   limit: number;
   orderBy?: "name" | "id";
   orderDir?: "asc" | "desc";
+  shape?: string[];
+  type?: string[];
 }
 
 export class PokemonRepository {
   private db = getDB();
 
   findAll(options: FindAllOptions) {
-    const { search, page, limit, orderBy = "id", orderDir = "asc" } = options;
+    const { search, page, limit, orderBy = "id", orderDir = "asc", shape, type } = options;
+    const hasSearch = search?.length && search.length > 1;
+    const hasShape = Array.isArray(shape) && shape.length > 0
+    const hasType = Array.isArray(type) && type.length > 0
 
     const offset = (page - 1) * limit;
 
-    const where = search ? `WHERE name LIKE ?` : "";
     const order = `ORDER BY ${orderBy} ${orderDir}`;
     const pagination = `LIMIT ? OFFSET ?`;
+    let where = "WHERE 1 = 1"
+    if (hasSearch) where += ` AND name LIKE ?`
+    if (hasShape) where += ` AND shape IN (${shape.map(() => "?").join(",")})`
+    if (hasType) where += ` AND ( type1 IN (${type.map(() => "?").join(",")})`
+    if (hasType) where += ` OR type2 IN (${type.map(() => "?").join(",")}) )`
 
     const query = `
       SELECT *
@@ -28,10 +37,19 @@ export class PokemonRepository {
       ${order}
       ${pagination}
     `;
+    console.log(query)
 
-    const params = search
-      ? [`%${search}%`, limit, offset]
-      : [limit, offset];
+    const params = []
+    if (hasSearch) params.push(`%${search}%`)
+    if (hasShape) { shape.forEach(shapeItem => params.push(shapeItem)); }
+    if (hasType) { type.forEach(typeItem => params.push(typeItem)); }
+    if (hasType) { type.forEach(typeItem => params.push(typeItem)); }
+    params.push(limit)
+    params.push(offset)
+
+    // const params = search
+    //   ? [`%${search}%`, limit, offset]
+    //   : [limit, offset];
 
     return this.db.prepare(query).all(...params) as PokemonDatabase[];
   }
